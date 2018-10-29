@@ -119,7 +119,7 @@ function addToInventory() {
             name: "addToInventoryID",
             type: "rawlist",
             message: "Which item_id would you like to add inventory into today?",
-            //choices: itemArray(arrayChoices)
+            //choices: itemArray()
             choices: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"] // hardcoded, needs to be dynamic. // test
         },{
             name: "addToInventoryQuantity",
