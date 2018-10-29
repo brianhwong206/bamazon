@@ -27,10 +27,13 @@ function itemArray() {
     arrayChoices = []; // set array to blank
     connection.query("SELECT * FROM products", function(err, res) {
         if (err) throw err;
-        var itemArrayResults = res;
+        var itemArrayResults = res; // JSON
+        
         for (var i = 0;  i < itemArrayResults.length; i++) {
+            //console.log(itemArrayResults[i].item_id);
             arrayChoices.push(itemArrayResults[i].item_id); // fill array
         }
+        console.log(arrayChoices);
     })
 }
 
@@ -59,6 +62,7 @@ function selectOptions(){
                 addToInventory();
                 break;
             case "Add New Product":
+                itemArray()
                 //addNewProduct();
                 break;
             default:
@@ -119,8 +123,8 @@ function addToInventory() {
             name: "addToInventoryID",
             type: "rawlist",
             message: "Which item_id would you like to add inventory into today?",
-            //choices: itemArray()
-            choices: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"] // hardcoded, needs to be dynamic. // test
+            choices: arrayChoices
+            //choices: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"] // hardcoded, needs to be dynamic. // test
         },{
             name: "addToInventoryQuantity",
             type: "input",
@@ -173,4 +177,65 @@ function addToInventory() {
             connection.end();
         });
     });
+}
+
+function addNewProduct() {
+    inquirer.prompt([
+        {
+            name: "itemNameToAdd",
+            type: "input",
+            message: "What is the name of the item would you like to add?" 
+            //validate no null?
+        },{
+            name: "itemDepartmentToAdd",
+            type: "input",
+            message: "What department does your item classify into?"
+            //validate?
+        },{
+            name: "itemPriceToAdd",
+            type: "input",
+            message: "What is the list price of your item?",
+            validate: function(value) {
+                if (isNaN(value) === false) {
+                    return true;
+                }
+                return false;
+            }
+        },{
+            name: "itemStockToAdd",
+            type: "intput",
+            message: "How many initial units would you like to begin with?"
+            //validate?
+        }
+    ]).then(answers => {
+        var newItemName = (answers.itemNameToAdd).toUpperCase();
+        var newItemDepartment = (answers.itemDepartmentToAdd).toUpperCase();
+        var newItemPrice = parseFloat(answers.itemPriceToAdd).toFixed(2);
+        var newItemQuantityStock = parseInt(answers.itemStockToAdd);
+
+        console.log("\n====Beginning of New Item Add====");
+        console.log(answers);
+        console.log("\n====End of New Item Add====");
+
+        console.log("====test====");
+        console.log(newItemName);
+        console.log(newItemDepartment);
+        console.log(newItemPrice);
+        console.log(newItemQuantityStock);
+        console.log("====end test====");
+
+        // connection.query(
+        //     "INSERT INTO products SET product_name = ? department_name = ? price = ? stock_quantity = ?",[newItemName, newItemDepartment, newItemPrice, newItemQuantityStock]
+        //   );
+        //   function(err, res) {
+        //     if (err) throw err;
+        //     console.log("====test====");
+        //     console.log(newItemName);
+        //     console.log(newItemDepartment);
+        //     console.log(newItemPrice);
+        //     console.log(newItemQuantityStock);
+        //     console.log("====end test====")
+        //   }
+        connection.end();
+    })
 }

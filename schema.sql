@@ -7,7 +7,7 @@ CREATE DATABASE bamazon_db;
 USE bamazon_db;
 
 -- Creates the table "products" within bamazon_db --
-CREATE TABLE product(
+CREATE TABLE products(
   -- Makes a INT column called "item_ID" which cannot contain null, item_id (unique id for each product)--
   item_id INT NOT NULL AUTO_INCREMENT,
   -- Makes a VARCHAR column called "product_name" which cannot contain null, product_name (Name of product) --
@@ -26,6 +26,6 @@ CREATE TABLE product(
 -- Insert 10 different mock products into database and table.
 INSERT INTO products (product_name, department_name, price, stock_quantity)
 
-VALUES ("Wireless Mouse", "Electronics", 10.00, 100), ("Portable Power Bank", "Electronics", 29.99, 50), ("Standard Headphones", "Electronics",3.25, 75), ("iPhone 6 Plus Case Cover", "Electronics", 1.50, 30), ("Lenovo E580 i7 500 GB Laptop", "Electronics", 899.99, 20), ("Zico Coconut Water 250ml", "Grocery ", 0.99, 500), ("Sparkling Water 500ml", "Grocery ", 0.99 , 750), ("Hot Water Thermos", "Kitchen", 9.99, 50), ("Hot Soup Container", "Kitchen", 14.99, 60), ("Portable Lunchbox", "Kitchen", 19.99, 20);
+VALUES ("WIRELESS MOUSE", "ELECTRONICS", 10.00, 100), ("PORTABLE POWER BANK", "ELECTRONICS", 29.99, 50), ("STANDARD HEADPHONES", "ELECTRONICS",3.25, 75), ("IPHONE 6 PLUS CASE COVER", "ELECTRONICS", 1.50, 30), ("LENOVO E580 I7 500 GB LAPTOP", "ELECTRONICS", 899.99, 20), ("ZICO COCONUT WATER 250ML", "GROCERY ", 0.99, 500), ("SPARKLING WATER 500ML", "GROCERY ", 0.99 , 750), ("HOT WATER THERMOS", "KITCHEN", 9.99, 50), ("HOT SOUP CONTAINER", "KITCHEN", 14.99, 60), ("PORTABLE LUNCHBOX", "KITCHEN", 19.99, 20);
 
 SELECT * from bamazon_db.product;
