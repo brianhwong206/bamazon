@@ -47,17 +47,6 @@ function showItems() {
   });
 }
 
-// function populateArray(){
-//     connection.query("SELECT * FROM products", function(err, res) {
-//         if (err) throw err;
-//         var results = res;
-//         for (var i = 0; i <results.length; i++){
-//             choiceArray.push(results[i].item_id);
-//         };
-//     }
-// )};
-
-
 function askUser() {
     inquirer.prompt([
         {
@@ -82,9 +71,6 @@ function askUser() {
         // Use user feedback for... whatever!!
         var requestedItem = answers.itemToBuy;
         var requestedQuantity = parseInt(answers.quantityRequested); // convert string type to int and store as variable
-
-        // console.log("Customer would like to purchse item_id: " + requestedItem);
-        // console.log("Customer would like to purchase a quantity of : " + requestedQuantity);
 
         connection.query("SELECT * FROM products WHERE item_id = ?",[requestedItem], function(err, res) {
             if (err) throw err;

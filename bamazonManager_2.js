@@ -24,13 +24,30 @@ connection.connect(function(err) {
   selectOptions();
 });
 
+ var itemArray = (arr) => {
+    arr = []; // set array to blank
+    connection.query("SELECT * FROM products", function(err, res) {
+        if (err) throw err;
+        //var itemArrayResults = res; // JSON
+        else {return res};
+    }).then (itemArrayResults =>{ // this is the response after successful promise.
+        for (var i = 0;  i < itemArrayResults.length; i++) {
+            //console.log(itemArrayResults[i].item_id);
+            arr.push(itemArrayResults[i].item_id); // fill array
+        }
+        //console.log("Item array results: ", itemArrayResults);
+        //console.log(arr);
+        return arr;
+    })
+}
+
 function selectOptions(){
     inquirer.prompt([/* Pass your questions in here */
         {
             name: "select",
             type: "rawlist",
             message: "What option would you like to choose today?",
-            choices: ["Display Items", "Display Low Inventory", "Add to Inventory"] //, "Add New Product"
+            choices: ["Display Items", "Display Low Inventory", "Add to Inventory", "Add New Product"]
         }
     
     ]).then(answers => {
@@ -46,13 +63,14 @@ function selectOptions(){
                 showLowInventory();
                 break;
             case "Add to Inventory":
-                // var a = itemArray(arrayChoices);
-                // console.log("Switch items: " + a);
-                addToInventory();
+                var a = itemArray(arrayChoices);
+                console.log("Switch items: " + a);
+                addToInventory(a);
                 break;
-            //case "Add New Product":
+            case "Add New Product":
+    
                 //addNewProduct();
-                //break;
+                break;
             default:
                 break;
         }
@@ -104,15 +122,15 @@ function showLowInventory() {
 
 // ask user what product they would like to add inventory to
 // ask user how much they would like to add
-function addToInventory() {
+function addToInventory(arr) {
 
     inquirer.prompt([/* Pass your questions in here */
         {
             name: "addToInventoryID",
             type: "rawlist",
             message: "Which item_id would you like to add inventory into today?",
-            //choices: arr
-            choices: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"] // hardcoded, needs to be dynamic. // test
+            choices: arr
+            //choices: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"] // hardcoded, needs to be dynamic. // test
         },{
             name: "addToInventoryQuantity",
             type: "input",
@@ -166,47 +184,6 @@ function addToInventory() {
         });
     });
 }
-
-function baddToInventory(){
-    connection.query("SELECT * FROM products", function(err, res) {
-        if (err) throw err;
-        var itemArray = [];
-        for (var i = 0; i<res.length; i++){
-            itemArray.push(res[i].item_id);
-        }
-
-        inquirer.prompt([
-            {name: "addToInventoryID",
-            type: "list",
-            message: "Which item_id would you like to add inventory into today?",
-            choices: itemArray
-            //choices: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"] // hardcoded, needs to be dynamic. // test
-        },
-        {
-            name: "addToInventoryQuantity",
-            type: "input",
-            message: "How much quantity would you like to add today?",
-            validate: function(value) {
-                if (isNaN(value) === false) {
-                    return true;
-                }
-                return false;
-            }
-        }
-
-        ]).then(answers => {
-            var addToInventoryItemID = answers.addToInventoryID;
-            var addToInventoryQuantityAmount = parseInt(answers.addToInventoryQuantity);
-    
-            console.log("\n User has selected ID: " + addToInventoryItemID);
-            console.log("\n User would like to add a quantity of: " + addToInventoryQuantityAmount)
-            console.log(itemArray);
-    })
-})
-    
-
-    connection.end();
-};
 
 function addNewProduct() {
     inquirer.prompt([
